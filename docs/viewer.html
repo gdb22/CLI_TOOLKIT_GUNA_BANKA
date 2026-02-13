@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Docs Viewer</title>
+  <link rel="stylesheet" href="/docs/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>CLI AI Toolkit — Docs</h1>
+      <nav>
+        <a href="/docs/index.html">Index</a>
+        <a href="/docs/viewer.html?file=md/README.md">README</a>
+        <a href="/docs/viewer.html?file=md/DOCUMENTATION_INDEX.md">Docs Index</a>
+        <a href="/docs/viewer.html?file=md/QUICKSTART_IMAGE_GENERATION.md">Quickstart</a>
+      </nav>
+    </div>
+    <div id="content" class="card md-content">Loading…</div>
+    <div class="footer">Brutalist docs viewer — local copy in <strong>docs/md/</strong></div>
+  </div>
+  <script>
+    function qs(name){const params=new URLSearchParams(location.search);return params.get(name)}
+    const file = qs('file') || 'md/README.md';
+    fetch(file).then(r=>r.text()).then(md=>{
+      document.getElementById('content').innerHTML = marked.parse(md)
+    }).catch(e=>{
+      document.getElementById('content').innerText = 'Error loading: ' + file
+    })
+  </script>
+</body>
+</html>

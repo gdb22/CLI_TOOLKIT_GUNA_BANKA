@@ -1,0 +1,145 @@
+*** Begin Patch
+*** Add File: docs/index.html
++<!doctype html>
++<html>
++<head>
++  <meta charset="utf-8" />
++  <meta name="viewport" content="width=device-width,initial-scale=1" />
++  <title>CLI AI Toolkit Docs</title>
++  <link rel="stylesheet" href="/docs/style.css" />
++</head>
++<body>
++  <div class="container">
++    <div class="header">
++      <h1>CLI AI Toolkit — Docs</h1>
++      <nav>
++        <a href="/docs/viewer.html?file=md/README.md">README</a>
++        <a href="/docs/viewer.html?file=md/DOCUMENTATION_INDEX.md">Documentation Index</a>
++        <a href="/docs/viewer.html?file=md/QUICKSTART_IMAGE_GENERATION.md">Quickstart</a>
++      </nav>
++    </div>
++
++    <div class="card">
++      <h2>Available Pages</h2>
++      <ul>
++        <li><a href="/docs/viewer.html?file=md/README.md">README</a></li>
++        <li><a href="/docs/viewer.html?file=md/DOCUMENTATION_INDEX.md">Documentation Index</a></li>
++        <li><a href="/docs/viewer.html?file=md/QUICKSTART_IMAGE_GENERATION.md">Quickstart: Image Generation</a></li>
++      </ul>
++    </div>
++
++    <div class="footer">Static brutalist docs — local viewer in <strong>docs/</strong></div>
++  </div>
++</body>
++</html>
++
+*** End Patch
+
+*** Begin Patch
+*** Add File: docs/viewer.html
++<!doctype html>
++<html>
++<head>
++  <meta charset="utf-8" />
++  <meta name="viewport" content="width=device-width,initial-scale=1" />
++  <title>Docs Viewer</title>
++  <link rel="stylesheet" href="/docs/style.css" />
++  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
++</head>
++<body>
++  <div class="container">
++    <div class="header">
++      <h1>CLI AI Toolkit — Docs</h1>
++      <nav>
++        <a href="/docs/index.html">Index</a>
++        <a href="/docs/viewer.html?file=md/README.md">README</a>
++        <a href="/docs/viewer.html?file=md/DOCUMENTATION_INDEX.md">Docs Index</a>
++        <a href="/docs/viewer.html?file=md/QUICKSTART_IMAGE_GENERATION.md">Quickstart</a>
++      </nav>
++    </div>
++    <div id="content" class="card md-content">Loading…</div>
++    <div class="footer">Brutalist docs viewer — local copy in <strong>docs/md/</strong></div>
++  </div>
++  <script>
++    function qs(name){const params=new URLSearchParams(location.search);return params.get(name)}
++    const file = qs('file') || 'md/README.md';
++    fetch(file).then(r=>r.text()).then(md=>{
++      document.getElementById('content').innerHTML = marked.parse(md)
++    }).catch(e=>{
++      document.getElementById('content').innerText = 'Error loading: ' + file
++    })
++  </script>
++</body>
++</html>
++
+*** End Patch
+
+*** Begin Patch
+*** Add File: docs/style.css
++/* Brutalist minimal CSS */
+:root{--bg:#ffffff;--fg:#111;--accent:#ff2d55}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
+body{background:var(--bg);color:var(--fg);padding:32px}
+.container{max-width:1100px;margin:0 auto}
+.header{border-bottom:6px solid var(--fg);padding-bottom:12px;margin-bottom:24px}
+h1{font-size:28px;margin:0}
+nav a{display:inline-block;margin-right:14px;color:var(--fg);text-decoration:none;font-weight:700}
+.card{border:4px solid var(--fg);padding:18px;margin:18px 0}
+.md-content{padding:12px;border-left:4px solid #eee;background:#fff}
+.footer{margin-top:32px;font-size:13px;color:#666}
+.code{background:#f6f6f6;padding:8px;border:1px solid #ddd;font-family:monospace}
+@media (max-width:700px){body{padding:16px}}
+
+*** End Patch
+
+*** Begin Patch
+*** Add File: docs/md/README.md
++# README
++
+This is a local copy of the project's `README.md` for the docs site.
++
+See the site index for links to other docs.
+
+*** End Patch
+
+*** Begin Patch
+*** Add File: docs/md/DOCUMENTATION_INDEX.md
++# Documentation Index
++
+This is a local copy of `DOCUMENTATION_INDEX.md` for the docs site.
++
+Refer to the project root for full source files.
+
+*** End Patch
+
+*** Begin Patch
+*** Add File: docs/md/QUICKSTART_IMAGE_GENERATION.md
++# Quick Start: Image Generation
++
+This is a local copy of `QUICKSTART_IMAGE_GENERATION.md` for the docs site.
++
+Use the project root files for the canonical source.
+
+*** End Patch
+
+*** Begin Patch
+*** Add File: .github/workflows/gh-pages.yml
++name: Deploy docs to GitHub Pages
++
++on:
+	+push:
+		+branches: [ main, master ]
+
+jobs:
+	deploy:
+		runs-on: ubuntu-latest
+		steps:
+			- uses: actions/checkout@v4
+			- name: Deploy to GitHub Pages
+				uses: peaceiris/actions-gh-pages@v3
+				with:
+					github_token: ${{ secrets.GITHUB_TOKEN }}
+					publish_dir: ./docs
+
+*** End Patch
